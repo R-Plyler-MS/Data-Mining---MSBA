@@ -1,0 +1,199 @@
+---
+title: "Randall_Plyler_CH3-4 EOC"
+author: "Randall Plyler"
+date: "1/22/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Sales of Riding Mowers: Scatter Plots. A company that manufactures riding
+mowers wants to identify the best sales prospects for an intensive sales campaign. In
+particular, the manufacturer is interested in classifying households as prospective owners or nonowners on the basis of Income (in $1000s) and Lot Size (in 1000 ft2). 
+
+The marketing expert looked at a random sample of 24 households, given in the file RidingMowers.csv.
+a. Using R, create a scatter plot of Lot Size vs. Income, color-coded by the outcome
+variable owner/nonowner. Make sure to obtain a well-formatted plot (create legible labels and a legend, etc.).
+
+
+```{r 3.2}
+library(ggplot2)
+
+df <- read.csv("C:/Users/randa/Dropbox/Masters/Winter/TBANLT 560 Data Mining/Files/DMBA-R-datasets/DMBA-R-datasets/RidingMowers.csv", header = TRUE)
+show(df)
+ggplot(df, aes(x=Lot_Size, y=Income, colour=Ownership)) + geom_point(shape=19, size=2.5)
+
+```
+
+
+
+3 Laptop Sales at a London Computer Chain: Bar Charts and Boxplots. The
+file LaptopSalesJanuary2008.csv contains data for all sales of laptops at a computer chain
+in London in January 2008. This is a subset of the full dataset that includes data for
+the entire year.
+
+a. Create a bar chart, showing the average retail price by store. Which store has the
+highest average? Which has the lowest?
+
+b. To better compare retail prices across stores, create side-by-side boxplots of retail
+price by store. Now compare the prices in the two stores from (a). Does there
+seem to be a difference between their price distributions?
+
+
+```{r 3.3A}
+library(dplyr)
+library(ggplot2)
+
+london_data <- read.csv("C:/Users/randa/Dropbox/Masters/Winter/TBANLT 560 Data Mining/Files/DMBA-R-datasets/DMBA-R-datasets/LaptopSalesJanuary2008.csv", header = TRUE)  # load data
+london_data2 <- london_data
+#Store.Postcode
+#Retail.Price
+
+#london_data <- select(london_data_original, c('Store.Postcode', 'Retail.Price'))
+london_data <- aggregate(london_data$Retail.Price, by = list(london_data$Store.Postcode), FUN = mean)
+barplot(london_data$x, names.arg =london_data$Group.1, xlab = "Location", ylab = "Average Price", las=2)
+
+```
+```{r 3.3B}
+
+ggplot(london_data2)+ geom_boxplot(aes(london_data2$Store.Postcode,london_data2$Retail.Price))+theme(axis.text.x = element_text(angle = 90))
+
+```
+
+```
+```
+Breakfast Cereals. Use the data for the breakfast cereals example in Section 4.8 to
+explore and summarize the data as follows:
+a. Which variables are quantitative/numerical? Which are ordinal? Which are
+nominal?
+b. Compute the mean, median, min, max, and standard deviation for each of the
+quantitative variables. This can be done through R’s sapply() function (e.g., sapply(data, mean, na.rm = TRUE)).
+c. Use R to plot a histogram for each of the quantitative variables. Based on the
+histograms and summary statistics, answer the following questions:
+i. Which variables have the largest variability?
+ii. Which variables seem skewed?
+iii. Are there any values that seem extreme?
+d. Use R to plot a side-by-side boxplot comparing the calories in hot vs. cold cereals.
+What does this plot show us?
+e. Use R to plot a side-by-side boxplot of consumer rating as a function of the shelf
+height. If we were to predict consumer rating from shelf height, does it appear that
+we need to keep all three categories of shelf height?
+f. Compute the correlation table for the quantitative variable (function cor()). In addition, generate a matrix plot for these variables (function plot(data)).
+i. Which pair of variables is most strongly correlated?
+ii. How can we reduce the number of variables based on these correlations?
+iii. How would the correlations change if we normalized the data first?
+g. Consider the first PC of the analysis of the 13 numerical variables in Table 4.11.
+Describe briefly what this PC represents.
+
+```{r 4 a b}
+
+cerealData <- read.csv("C:/Users/randa/Dropbox/Masters/Winter/TBANLT 560 Data Mining/Files/DMBA-R-datasets/DMBA-R-datasets/cereals.csv", header = TRUE)
+summary(cerealData) #calculate the summary statistics of the variables
+
+#name ->nominal 
+#mfr ->nominal  
+#type ->nominal
+#calories ->numerical
+#protein ->numerical
+#fat ->numerical
+#sodium ->numerical
+#fiber ->numerical
+#carbo ->numerical
+#sugars ->numerical
+#potass ->numerical
+#vitamins ->numerical
+#shelf ->ordinal
+#weight ->numerical
+#cups ->numerical
+#rating ->ordinal
+
+#This text is from the book and what I used to classify the variables
+#Categorical variables can be either coded as numerical (1, 2, 3) or text
+
+#(payments current, payments not current, bankrupt). Categorical variables can
+#be unordered (called nominal variables) with categories such as North America,
+#Europe, and Asia; or they can be ordered (called ordinal variables) with categories
+#such as high value, low value, and nil value.
+```
+```{r 4 b}
+standDev <- sapply(cerealData, sd)
+standDev 
+#This shows all of the standard deviation's of all the attributes that have them.
+```
+```{r c}
+library(ggplot2)
+#name ->nominal 
+#mfr ->nominal  
+#type ->nominal
+#calories ->numerical
+#protein ->numerical
+#fat ->numerical
+#sodium ->numerical
+#fiber ->numerical
+#carbo ->numerical
+#sugars ->numerical
+#potass ->numerical
+#vitamins ->numerical
+#shelf ->ordinal
+#weight ->numerical
+#cups ->numerical
+#rating ->ordinal
+ggplot(cerealData, aes(x=calories)) + geom_histogram()
+ggplot(cerealData, aes(x=protein)) + geom_histogram()
+ggplot(cerealData, aes(x=fat)) + geom_histogram()
+ggplot(cerealData, aes(x=sodium)) + geom_histogram()
+ggplot(cerealData, aes(x=fiber)) + geom_histogram()
+ggplot(cerealData, aes(x=carbo)) + geom_histogram()
+ggplot(cerealData, aes(x=sugars)) + geom_histogram()
+ggplot(cerealData, aes(x=potass)) + geom_histogram()
+ggplot(cerealData, aes(x=vitamins)) + geom_histogram()
+ggplot(cerealData, aes(x=shelf)) + geom_histogram()
+ggplot(cerealData, aes(x=weight)) + geom_histogram()
+ggplot(cerealData, aes(x=cups)) + geom_histogram()
+ggplot(cerealData, aes(x=rating)) + geom_histogram()
+
+```
+
+```{r d}
+boxplot(calories~type,data=cerealData, xlab="Hot and Cold cereals",ylab="Calories")
+```
+
+```{r e}
+boxplot(rating~shelf,data=cerealData,xlab="rating",ylab="shelf",horizontal=TRUE)
+
+```
+
+```{r f}
+#name ->nominal 
+#mfr ->nominal  
+#type ->nominal
+#calories ->numerical
+#protein ->numerical
+#fat ->numerical
+#sodium ->numerical
+#fiber ->numerical
+#carbo ->numerical
+#sugars ->numerical
+#potass ->numerical
+#vitamins ->numerical
+#shelf ->ordinal
+#weight ->numerical
+#cups ->numerical
+#rating ->ordinal
+
+#This is a correlation matrix of the numberic and ordinal variables.
+dataframeforcorrelationmatrix <- cerealData %>% select(calories,protein,fat,sodium,fiber,carbo,sugars,potass,vitamins,shelf,weight,cups,rating)
+show(dataframeforcorrelationmatrix)
+correlation_matrix2 <- cor(dataframeforcorrelationmatrix)
+correlation_matrix2
+
+#i. Which pair of variables is most strongly correlated?
+#calories and weight with a .6960 correlation
+#ii. How can we reduce the number of variables based on these correlations?
+#by removing the highly correlated variables the collinearity will improve
+#iii. How would the correlations change if we normalized the data first?
+#The correlation will not change
+```
+

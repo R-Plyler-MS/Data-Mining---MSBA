@@ -1,0 +1,50 @@
+---
+title: "Randall_Plyler_R_Ch3-4"
+author: "Randall Plyler"
+date: "1/22/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+getwd()
+housing.df <- read.csv("C:/Users/randa/Dropbox/Masters/Winter/TBANLT 560 Data Mining/Files/DMBA-R-datasets/DMBA-R-datasets/BostonHousing.csv", header = TRUE)  # load data
+
+```
+
+
+
+```{r Chapter 3 Randall}
+#Randall Code write CSV
+library(ggmap)
+correlation_matrix <- cor(housing.df)
+correlation_matrix
+
+write.csv(correlation_matrix,
+          "C:/Users/randa/Dropbox/Masters/Winter/TBANLT 560 Data Mining/Files/DMBA-R-datasets/DMBA-R-datasets/Correlation_Randall_Plyler.csv", row.names = FALSE)
+
+randall_correlation_matrix <- read.csv("C:/Users/randa/Dropbox/Masters/Winter/TBANLT 560 Data Mining/Files/DMBA-R-datasets/DMBA-R-datasets/Correlation_Randall_Plyler.csv", header = TRUE)  # load data
+
+longitude_lattitude_data <- read.csv("C:/Users/randa/Dropbox/Masters/Winter/TBANLT 560 Data Mining/Files/DMBA-R-datasets/DMBA-R-datasets/incidentsred.csv", header = TRUE)  # load data
+
+register_google(key = "AIzaSyBI3Nj5LhgKaOwcaRClCioZQelBFmd7ZOc")
+Map <- get_map("Seattle, WA", zoom = 11)
+ggmap(Map) + geom_point(aes(x = Longitude, y = Latitude), data = longitude_lattitude_data,
+                        alpha = 0.4, colour = "red", size = .5) 
+```
+
+```{r Chapter 4 Randall}
+ggplot(housing.df, aes(x=CRIM, y=MEDV, colour=CRIM)) + geom_point(shape=19, size=2.5)
+
+```
+
+```{r}
+housing.df$CRIM <- ifelse(housing.df$CRIM > 1, 1, 0)
+head(housing.df, 10)
+
+```
+
