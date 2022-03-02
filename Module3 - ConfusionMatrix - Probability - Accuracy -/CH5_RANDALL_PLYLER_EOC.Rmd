@@ -1,0 +1,97 @@
+---
+title: "Ch5_EOC_RandallPlyler"
+author: "Randall Plyler"
+date: "1/24/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(lattice)
+library(gains)
+library(caret)
+library(e1071)
+```
+
+Consider Figure 5.12, the decile-wise lift chart for the transaction data model, applied
+to new data.
+
+a. Interpret the meaning of the first and second bars from the left.
+
+The left two bars indicate that the model correctly classified the model performance. The chart aggregates the lift information and classifies that the best two mean responses are classified in the 1 and 2 percntile blocks. 
+
+b. Explain how you might use this information in practice.
+
+When wanting to best predict a business problem or scenario, looking at a decile bar chart can assist in determining the correct amount to predict. 
+
+c. Another analyst comments that you could improve the accuracy of the model by classifying everything as nonfraudulent. If you do that, what is the error rate?
+
+This would indicate that the decile-wise lift chart with the buckets that are smaller would indicate the nonfraudulent activity. This would be approximately the 5% range.
+
+
+d. Comment on the usefulness, in this situation, of these two metrics of model performance (error rate and lift).
+
+Error rate does a better job at determining what the misclassification rate is, while lift does a better job at providing effectiveness of the classification model. Lift ultimately does a better job at evaluating performance of the classification models.
+
+```{r}
+#The overall goal is to use a subset of records to determine the highest cummulative predicted values of the plot. In the decile lift chart shown of the continuous outcome variables, it is shown that with a decending bar chart to the right, this is an example of the lift chart seperating from the naive prediction. The furthur away the lift curve goes from the diagonal benchmark line, the better the model is doing in separating records with high values outcomes from the low value outcomes.
+
+#In practice, this can be used like the example the book provides where in the toyota cars dataset, the model is used to determine the top10% of cars that give the highest predicted sales.
+```
+
+A large number of insurance records are to be examined to develop a model for predicting fraudulent claims. Of the claims in the historical database, 1% were judged
+148 EVALUATING PREDICTIVE PERFORMANCE
+to be fraudulent. A sample is taken to develop a model, and oversampling is used to
+provide a balanced sample in light of the very low response rate. When applied to
+this sample (n = 800), the model ends up correctly classifying 310 frauds, and 270
+nonfrauds. It missed 90 frauds, and classified 130 records incorrectly as frauds when
+they were not.
+
+a. Produce the confusion matrix for the sample as it stands.
+
+
+
+b. Find the adjusted misclassification rate (adjusting for the oversampling).
+
+Missclasification Rate = 27.5%
+
+
+c. What percentage of new records would you expect to be classified as fraudulent?
+
+Fraudlent Rate = 55%
+
+
+```{r}
+DataFrameA <- matrix(c(310,90,400,130,270,400,440,360,800), ncol=3, byrow=TRUE)
+DataFrameA <- confusionMatrix(DataFrameA)
+DataFrameA
+
+DataFrameB <- matrix(c(310,90,400,130,270,400,440,360,800), ncol=3, byrow=TRUE)
+colnames(DataFrameB)<-c("Fraud","NonFraud","Total" )
+rownames(DataFrameB)<-c("Fraud","NonFraud","Total" )
+
+DataFrameB
+
+#Actual percentage of fraud ->50%
+#Predicted Fraud ->55%
+#
+
+```
+
+Table 5.7 shows a small set of predictive model validation results for a classification
+model, with both actual values and propensities.
+a. Calculate error rates, sensitivity, and specificity using cutoffs of 0.25, 0.5, and 0.75.
+b. Create a decile-wise lift chart in R.
+
+```{r}
+DataFrame1 <- matrix(c(.03,0,.52,0,.38,0,.82,1,.33,0,.42,0,.55,1,.59,0,.09,0,.21,0,.43,0,.04,0,.08,0,.13,0,.01,0,.79,1,.42,0,.29,0,.08,0,.02,0), ncol=2, byrow=TRUE)
+colnames(DataFrame1)<-c("Propensity of 1","Actual")
+DataFrame1<- as.data.frame(DataFrame1)
+confusionMatrix(as.factor(ifelse(DataFrame1$`Propensity of 1`>0.25, '1', '0')),as.factor(DataFrame1$Actual))
+confusionMatrix(as.factor(ifelse(DataFrame1$`Propensity of 1`>0.5, '1', '0')),as.factor(DataFrame1$Actual))
+confusionMatrix(as.factor(ifelse(DataFrame1$`Propensity of 1`>0.75, '1', '0')),as.factor(DataFrame1$Actual))
+gain <- gains(DataFrame1$Actual, DataFrame1$`Propensity of 1`)
+barplot(gain$mean.resp/mean(DataFrame1$Actual), names.arg=gain$depth, xlab="Percentile",ylab ="Mean Response")
+```
+

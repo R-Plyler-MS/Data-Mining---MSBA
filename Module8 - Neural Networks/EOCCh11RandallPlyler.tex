@@ -1,0 +1,471 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\title{EOCCh11RandallPlyler}
+\author{Randall Plyler}
+\date{2/27/2022}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={EOCCh11RandallPlyler},
+  pdfauthor={Randall Plyler},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\maketitle
+
+Credit Card Use. Consider the hypothetical bank data in Table 11.8 on
+consumers' use of credit card credit facilities. Create a small
+worksheet in Excel, like that used in Example 1, to illustrate one pass
+through a simple neural network. TABLE 11.8 DATA FOR CREDIT CARD EXAMPLE
+AND VARIABLE DESCRIPTIONS Years Salary Used Credit 4 43 0 18 65 1 1 53 0
+3 95 0 15 88 1 6 112 1 Years: number of years the customer has been with
+the bank Salary: customer's salary (in thousands of dollars) Used
+Credit: 1 = customer has left an unpaid credit card balance at the end
+of at least one month in the prior year, 0 = balance was paid off at the
+end of each month
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{VarA }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Years=}\FunctionTok{c}\NormalTok{(}\DecValTok{4}\NormalTok{,}\DecValTok{18}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{15}\NormalTok{,}\DecValTok{6}\NormalTok{),}\AttributeTok{Salary=}\FunctionTok{c}\NormalTok{(}\DecValTok{43}\NormalTok{,}\DecValTok{65}\NormalTok{,}\DecValTok{53}\NormalTok{,}\DecValTok{95}\NormalTok{,}\DecValTok{88}\NormalTok{,}\DecValTok{112}\NormalTok{),}\AttributeTok{Used\_Credit=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+\NormalTok{VarA}\SpecialCharTok{$}\NormalTok{Has\_Used\_Credit }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(VarA}\SpecialCharTok{$}\NormalTok{Used\_Credit }\SpecialCharTok{==} \DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\NormalTok{VarA}\SpecialCharTok{$}\NormalTok{Has\_Not\_Used\_Credit }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(VarA}\SpecialCharTok{$}\NormalTok{Used\_Credit }\SpecialCharTok{==} \DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\NormalTok{neuralnet\_Data }\OtherTok{\textless{}{-}} \FunctionTok{neuralnet}\NormalTok{(Has\_Used\_Credit }\SpecialCharTok{+}\NormalTok{ Has\_Not\_Used\_Credit }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Years }\SpecialCharTok{+}\NormalTok{ Salary,}\AttributeTok{data =}\NormalTok{ VarA, }\AttributeTok{linear.output =}\NormalTok{ F, }\AttributeTok{hidden =} \DecValTok{3}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(neuralnet\_Data)}
+\end{Highlighting}
+\end{Shaded}
+
+Car Sales. Consider the data on used cars (ToyotaCorolla.csv) with 1436
+records and details on 38 attributes, including Price, Age, KM, HP, and
+other specifications. The goal is to predict the price of a used Toyota
+Corolla based on its specifications. a. Fit a neural network model to
+the data. Use a single hidden layer with 2 nodes. • Use predictors
+Age\_08\_04, KM, Fuel\_Type, HP, Automatic, Doors, Quarterly\_Tax,
+Mfr\_Guarantee, Guarantee\_Period, Airco, Automatic\_airco, CD\_Player,
+Powered\_Windows, Sport\_Model, and Tow\_Bar. • Remember to first scale
+the numerical predictor and outcome variables to a 0--1 scale (use
+function preprocess() with method = ``range''---see Chapter 7) and
+convert categorical predictors to dummies.
+
+Record the RMS error for the training data and the validation data.
+Repeat the process, changing the number of hidden layers and nodes to
+\{single layer with 5 nodes\}, \{two layers, 5 nodes in each layer\}.
+
+\begin{enumerate}
+\def\labelenumi{\roman{enumi}.}
+\item
+  What happens to the RMS error for the training data as the number of
+  layers and nodes increases?
+\item
+  What happens to the RMS error for the validation data?
+\item
+  Comment on the appropriate number of layers and nodes for this
+  application.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{5000}\NormalTok{)}
+\NormalTok{ToyotaCorollaDF }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"C:/Users/randa/Dropbox/Masters/Winter/TBANLT 560 Data Mining/Files/DMBA{-}R{-}datasets/DMBA{-}R{-}datasets/ToyotaCorolla.csv"}\NormalTok{)}
+
+\NormalTok{ToyotaCorollaDF}\SpecialCharTok{$}\NormalTok{CNG }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{*}\NormalTok{ (ToyotaCorollaDF}\SpecialCharTok{$}\NormalTok{Fuel\_Type }\SpecialCharTok{==} \StringTok{"CNG"}\NormalTok{)}
+\NormalTok{ToyotaCorollaDF}\SpecialCharTok{$}\NormalTok{Diesel }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{*}\NormalTok{ (ToyotaCorollaDF}\SpecialCharTok{$}\NormalTok{Fuel\_Type }\SpecialCharTok{==} \StringTok{"Diesel"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{TrainDF }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\FunctionTok{row.names}\NormalTok{(ToyotaCorollaDF), }\FloatTok{0.6}\SpecialCharTok{*}\FunctionTok{dim}\NormalTok{(ToyotaCorollaDF)[}\DecValTok{1}\NormalTok{])  }
+\NormalTok{ValidDF }\OtherTok{\textless{}{-}} \FunctionTok{setdiff}\NormalTok{(}\FunctionTok{row.names}\NormalTok{(ToyotaCorollaDF), TrainDF)  }
+\NormalTok{TrainDF2 }\OtherTok{\textless{}{-}}\NormalTok{ ToyotaCorollaDF[TrainDF, ]}
+\NormalTok{ValidDF2 }\OtherTok{\textless{}{-}}\NormalTok{ ToyotaCorollaDF[ValidDF, ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Nvalues }\OtherTok{\textless{}{-}} \FunctionTok{preProcess}\NormalTok{(TrainDF2, }\AttributeTok{method=}\StringTok{"range"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in preProcess.default(TrainDF2, method = "range"): No variation for for:
+## Cylinders
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{TrainingNValues }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(Nvalues, TrainDF2)}
+\NormalTok{ValidationNValues }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(Nvalues, ValidDF2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{NN2 }\OtherTok{\textless{}{-}} \FunctionTok{neuralnet}\NormalTok{(Price }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Age\_08\_04}\SpecialCharTok{+}\NormalTok{KM}\SpecialCharTok{+}\NormalTok{CNG}\SpecialCharTok{+}\NormalTok{Diesel}\SpecialCharTok{+}\NormalTok{HP}\SpecialCharTok{+}\NormalTok{Automatic}\SpecialCharTok{+}\NormalTok{Doors}\SpecialCharTok{+}\NormalTok{Quarterly\_Tax}\SpecialCharTok{+}\NormalTok{Mfr\_Guarantee}\SpecialCharTok{+}\NormalTok{Guarantee\_Period}\SpecialCharTok{+}\NormalTok{Airco}\SpecialCharTok{+}\NormalTok{Automatic\_airco}\SpecialCharTok{+}\NormalTok{CD\_Player}\SpecialCharTok{+}\NormalTok{Powered\_Windows}\SpecialCharTok{+}\NormalTok{Sport\_Model}\SpecialCharTok{+}\NormalTok{Tow\_Bar, }\AttributeTok{data=}\NormalTok{TrainingNValues , }\AttributeTok{linear.output =}\NormalTok{ T,}\AttributeTok{hidden =} \DecValTok{2}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(NN2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{find}\NormalTok{(}\StringTok{"compute"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "package:neuralnet"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{TrainingDataPrediction }\OtherTok{\textless{}{-}} \FunctionTok{compute}\NormalTok{(NN2, TrainingNValues)}
+\NormalTok{NN2}\SpecialCharTok{$}\NormalTok{result.matrix}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                                       [,1]
+## error                         7.059771e-01
+## reached.threshold             9.846242e-03
+## steps                         3.508000e+03
+## Intercept.to.1layhid1         6.982080e-01
+## Age_08_04.to.1layhid1         3.053818e-01
+## KM.to.1layhid1               -4.496643e-01
+## CNG.to.1layhid1              -3.851361e-01
+## Diesel.to.1layhid1           -2.175875e-01
+## HP.to.1layhid1               -3.798870e-01
+## Automatic.to.1layhid1         7.547837e-02
+## Doors.to.1layhid1             5.646165e-02
+## Quarterly_Tax.to.1layhid1     3.172959e-01
+## Mfr_Guarantee.to.1layhid1     7.595153e-02
+## Guarantee_Period.to.1layhid1  1.028748e+00
+## Airco.to.1layhid1             7.378580e-02
+## Automatic_airco.to.1layhid1   5.932922e-01
+## CD_Player.to.1layhid1         8.325264e-02
+## Powered_Windows.to.1layhid1  -5.701541e-02
+## Sport_Model.to.1layhid1      -6.343069e-02
+## Tow_Bar.to.1layhid1          -1.669707e-01
+## Intercept.to.1layhid2        -4.520187e-01
+## Age_08_04.to.1layhid2        -2.452217e+00
+## KM.to.1layhid2               -6.056319e-01
+## CNG.to.1layhid2               5.126477e-02
+## Diesel.to.1layhid2            1.469633e-01
+## HP.to.1layhid2                1.264791e+00
+## Automatic.to.1layhid2         5.539629e-02
+## Doors.to.1layhid2             2.884120e-02
+## Quarterly_Tax.to.1layhid2     6.548410e-01
+## Mfr_Guarantee.to.1layhid2    -3.181327e-02
+## Guarantee_Period.to.1layhid2 -6.369440e-01
+## Airco.to.1layhid2            -2.441693e-02
+## Automatic_airco.to.1layhid2  -1.127060e-01
+## CD_Player.to.1layhid2        -8.456530e-03
+## Powered_Windows.to.1layhid2   1.742559e-01
+## Sport_Model.to.1layhid2       1.208346e-01
+## Tow_Bar.to.1layhid2           1.515603e-01
+## Intercept.to.Price           -4.871244e-01
+## 1layhid1.to.Price             7.868422e-01
+## 1layhid2.to.Price             9.831216e-01
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ValidationDataPrediction }\OtherTok{\textless{}{-}} \FunctionTok{compute}\NormalTok{(NN2, ValidationNValues)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DF\_Prediction2N }\OtherTok{\textless{}{-}} \FunctionTok{RMSE}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(TrainingDataPrediction), TrainingNValues}\SpecialCharTok{$}\NormalTok{Price)}
+\FunctionTok{show}\NormalTok{(DF\_Prediction2N)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.4431166
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{predict\_valid\_two\_nodes }\OtherTok{\textless{}{-}} \FunctionTok{RMSE}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(ValidationDataPrediction), ValidationNValues}\SpecialCharTok{$}\NormalTok{Price)}
+\FunctionTok{show}\NormalTok{(predict\_valid\_two\_nodes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.4394912
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{NN3 }\OtherTok{\textless{}{-}} \FunctionTok{neuralnet}\NormalTok{(Price }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Age\_08\_04}\SpecialCharTok{+}\NormalTok{KM}\SpecialCharTok{+}\NormalTok{CNG}\SpecialCharTok{+}\NormalTok{Diesel}\SpecialCharTok{+}\NormalTok{HP}\SpecialCharTok{+}\NormalTok{Automatic}\SpecialCharTok{+}\NormalTok{Doors}\SpecialCharTok{+}\NormalTok{Quarterly\_Tax}\SpecialCharTok{+}\NormalTok{Mfr\_Guarantee}\SpecialCharTok{+}\NormalTok{Guarantee\_Period}\SpecialCharTok{+}\NormalTok{Airco}\SpecialCharTok{+}\NormalTok{Automatic\_airco}\SpecialCharTok{+}\NormalTok{CD\_Player}\SpecialCharTok{+}\NormalTok{Powered\_Windows}\SpecialCharTok{+}\NormalTok{Sport\_Model}\SpecialCharTok{+}\NormalTok{Tow\_Bar,}\AttributeTok{data =}\NormalTok{ TrainingNValues , }\AttributeTok{linear.output =}\NormalTok{ T,}\AttributeTok{hidden =} \DecValTok{5}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(NN3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{TrainingPredictionDF\_NN3 }\OtherTok{\textless{}{-}} \FunctionTok{compute}\NormalTok{(NN3, TrainingNValues)}
+\NormalTok{NN3}\SpecialCharTok{$}\NormalTok{result.matrix}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                                       [,1]
+## error                         6.174887e-01
+## reached.threshold             9.583785e-03
+## steps                         3.362000e+03
+## Intercept.to.1layhid1        -5.366762e-01
+## Age_08_04.to.1layhid1         7.559944e-01
+## KM.to.1layhid1               -7.496812e-02
+## CNG.to.1layhid1               2.663798e+00
+## Diesel.to.1layhid1           -1.716245e-01
+## HP.to.1layhid1                1.096923e+00
+## Automatic.to.1layhid1        -3.106902e-01
+## Doors.to.1layhid1            -1.075364e-01
+## Quarterly_Tax.to.1layhid1    -5.229435e-01
+## Mfr_Guarantee.to.1layhid1    -1.163404e+00
+## Guarantee_Period.to.1layhid1  1.045925e-01
+## Airco.to.1layhid1            -4.468836e-01
+## Automatic_airco.to.1layhid1  -3.222071e-01
+## CD_Player.to.1layhid1        -4.717692e-01
+## Powered_Windows.to.1layhid1   2.443256e-01
+## Sport_Model.to.1layhid1       6.386884e-01
+## Tow_Bar.to.1layhid1           1.699592e-01
+## Intercept.to.1layhid2         9.139912e-01
+## Age_08_04.to.1layhid2         6.623845e-01
+## KM.to.1layhid2                1.469289e+00
+## CNG.to.1layhid2              -1.827696e+00
+## Diesel.to.1layhid2            5.724052e-01
+## HP.to.1layhid2               -4.402310e-01
+## Automatic.to.1layhid2         2.935238e-03
+## Doors.to.1layhid2             9.908859e-02
+## Quarterly_Tax.to.1layhid2    -8.798880e-01
+## Mfr_Guarantee.to.1layhid2     2.414087e-01
+## Guarantee_Period.to.1layhid2 -6.103683e-01
+## Airco.to.1layhid2             2.255359e-01
+## Automatic_airco.to.1layhid2  -1.473083e+00
+## CD_Player.to.1layhid2         7.715111e-02
+## Powered_Windows.to.1layhid2  -2.262570e+00
+## Sport_Model.to.1layhid2      -6.168520e-01
+## Tow_Bar.to.1layhid2          -1.206982e-01
+## Intercept.to.1layhid3         1.325730e-01
+## Age_08_04.to.1layhid3        -1.001120e+00
+## KM.to.1layhid3                1.051671e-01
+## CNG.to.1layhid3              -3.674927e+00
+## Diesel.to.1layhid3            7.730201e-01
+## HP.to.1layhid3               -7.924331e-01
+## Automatic.to.1layhid3         4.167179e-01
+## Doors.to.1layhid3             5.706195e-02
+## Quarterly_Tax.to.1layhid3     5.624520e-02
+## Mfr_Guarantee.to.1layhid3     2.098056e+00
+## Guarantee_Period.to.1layhid3 -9.301091e-01
+## Airco.to.1layhid3             5.930363e-01
+## Automatic_airco.to.1layhid3   5.227348e-01
+## CD_Player.to.1layhid3         7.271614e-01
+## Powered_Windows.to.1layhid3  -4.937870e-02
+## Sport_Model.to.1layhid3      -6.338049e-01
+## Tow_Bar.to.1layhid3          -1.288364e-01
+## Intercept.to.1layhid4         1.815419e+00
+## Age_08_04.to.1layhid4        -2.429442e+00
+## KM.to.1layhid4               -3.377448e-01
+## CNG.to.1layhid4               2.749530e+00
+## Diesel.to.1layhid4            1.312336e+00
+## HP.to.1layhid4                4.787643e+00
+## Automatic.to.1layhid4        -3.944657e-01
+## Doors.to.1layhid4            -2.269129e-01
+## Quarterly_Tax.to.1layhid4    -1.692177e+00
+## Mfr_Guarantee.to.1layhid4     1.480595e-01
+## Guarantee_Period.to.1layhid4 -1.119940e+00
+## Airco.to.1layhid4            -5.211601e-01
+## Automatic_airco.to.1layhid4  -1.497509e-01
+## CD_Player.to.1layhid4        -5.073821e-01
+## Powered_Windows.to.1layhid4  -2.483228e+00
+## Sport_Model.to.1layhid4       1.323955e+00
+## Tow_Bar.to.1layhid4           3.385716e-01
+## Intercept.to.1layhid5        -2.495586e+00
+## Age_08_04.to.1layhid5        -4.813944e+00
+## KM.to.1layhid5               -9.395056e-01
+## CNG.to.1layhid5              -3.205785e+02
+## Diesel.to.1layhid5            1.200166e+00
+## HP.to.1layhid5                4.700658e+00
+## Automatic.to.1layhid5         4.430137e-01
+## Doors.to.1layhid5             6.004332e-01
+## Quarterly_Tax.to.1layhid5     8.737841e-01
+## Mfr_Guarantee.to.1layhid5    -1.208205e+00
+## Guarantee_Period.to.1layhid5 -2.017838e+00
+## Airco.to.1layhid5             3.135292e-02
+## Automatic_airco.to.1layhid5  -5.120749e-01
+## CD_Player.to.1layhid5         1.418437e-01
+## Powered_Windows.to.1layhid5   6.339562e-01
+## Sport_Model.to.1layhid5       3.768727e-01
+## Tow_Bar.to.1layhid5           2.020157e-01
+## Intercept.to.Price            1.366744e+00
+## 1layhid1.to.Price            -1.412395e+00
+## 1layhid2.to.Price            -4.232753e-01
+## 1layhid3.to.Price            -7.786060e-01
+## 1layhid4.to.Price             2.632600e-01
+## 1layhid5.to.Price             3.364949e-01
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ValidationPredictionDF\_NN3 }\OtherTok{\textless{}{-}} \FunctionTok{compute}\NormalTok{(NN3, ValidationNValues)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DFA }\OtherTok{\textless{}{-}} \FunctionTok{RMSE}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(TrainingPredictionDF\_NN3), TrainingNValues}\SpecialCharTok{$}\NormalTok{Price)}
+\FunctionTok{show}\NormalTok{(DFA)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.4363478
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{predict\_valid\_five\_nodes }\OtherTok{\textless{}{-}} \FunctionTok{RMSE}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(ValidationPredictionDF\_NN3), ValidationNValues}\SpecialCharTok{$}\NormalTok{Price)}
+\FunctionTok{show}\NormalTok{(predict\_valid\_five\_nodes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.4335297
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{NN4 }\OtherTok{\textless{}{-}} \FunctionTok{neuralnet}\NormalTok{(Price }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Age\_08\_04}\SpecialCharTok{+}\NormalTok{KM}\SpecialCharTok{+}\NormalTok{CNG}\SpecialCharTok{+}\NormalTok{Diesel}\SpecialCharTok{+}\NormalTok{HP}\SpecialCharTok{+}\NormalTok{Automatic}\SpecialCharTok{+}\NormalTok{Doors}\SpecialCharTok{+}\NormalTok{Quarterly\_Tax}\SpecialCharTok{+}\NormalTok{Mfr\_Guarantee}\SpecialCharTok{+}\NormalTok{Guarantee\_Period}\SpecialCharTok{+}\NormalTok{Airco}\SpecialCharTok{+}\NormalTok{Automatic\_airco}\SpecialCharTok{+}\NormalTok{CD\_Player}\SpecialCharTok{+}\NormalTok{Powered\_Windows}\SpecialCharTok{+}\NormalTok{Sport\_Model}\SpecialCharTok{+}\NormalTok{Tow\_Bar,}\AttributeTok{data =}\NormalTok{ TrainingNValues , }\AttributeTok{linear.output =}\NormalTok{ T,}\AttributeTok{hidden =} \FunctionTok{c}\NormalTok{(}\DecValTok{5}\NormalTok{,}\DecValTok{5}\NormalTok{))}
+\FunctionTok{plot}\NormalTok{(NN4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{VarX }\OtherTok{\textless{}{-}} \FunctionTok{compute}\NormalTok{(NN4, TrainingNValues)}
+\NormalTok{VarY }\OtherTok{\textless{}{-}} \FunctionTok{compute}\NormalTok{(NN4, ValidationNValues)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DF\_Prediction5N }\OtherTok{\textless{}{-}} \FunctionTok{RMSE}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(VarX), TrainingNValues}\SpecialCharTok{$}\NormalTok{Price)}
+\FunctionTok{show}\NormalTok{(DF\_Prediction5N)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.4446332
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DF2\_Prediction5N }\OtherTok{\textless{}{-}} \FunctionTok{RMSE}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(VarY), ValidationNValues}\SpecialCharTok{$}\NormalTok{Price)}
+\end{Highlighting}
+\end{Shaded}
+
+The RMSE of the training and validation models seems to change very very
+minimal. The number of hidden layer's used is 2 for most of the nerual
+network and shows that the more that there is, the little impact it has
+on the error of prediction.
+
+\end{document}

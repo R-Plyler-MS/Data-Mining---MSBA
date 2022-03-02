@@ -1,0 +1,195 @@
+---
+title: "6-7RandallPlylerAfter"
+author: "Randall Plyler"
+date: "2/12/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Predicting Airfare on New Routes.
+The following problem takes place in the United States in the late 1990s, when many major US cities were facing issues with airport congestion, partly as a result of the 1978 deregulation of airlines. Both fares and routes were freed from regulation, and low-fare carriers such as Southwest (SW) began competing on existing routes and starting nonstop service on routes that previously lacked it. 
+
+Building completely new airports is generally not feasible, but sometimes decommissioned military bases or smaller municipal airports can be reconfigured as regional or larger commercial airports. There are numerous players and interests involved in the issue (airlines, city, state and federal authorities, civic groups, the military, airport operators), and an aviation consulting firm is seeking advisory contracts with these players. The firm needs predictive models to support its consulting service. One thing the firm might want to be able to predict is fares, in the event a new airport is brought into service. The firm starts with the file Airfares.csv, which contains real data that were collected between Q3-1996 and Q2-1997. 
+
+```{r}
+Airfares.csv <- read.csv("C:/Users/randa/Dropbox/Masters/Winter/TBANLT 560 Data Mining/Files/DMBA-R-datasets/DMBA-R-datasets/Airfares.csv")
+#show(Airfares.csv)
+
+```
+
+
+The variables in these data are listed in Table 6.11, and are believed to be important in predicting FARE. Some airport-to-airport data are available, but most are at the city-to-city level. One question that will be of interest in the analysis is the effect that the presence or absence of Southwest has on FARE.
+
+a. Explore the numerical predictors and response (FARE) by creating a correlation
+table and examining some scatterplots between FARE and those predictors. What
+seems to be the best single predictor of FARE?
+
+```{r}
+
+airfares.df <- Airfares.csv
+#show(airfares.df)
+AirFareDataSet2 <- airfares.df[, c('COUPON','NEW','HI','S_INCOME','E_INCOME','S_POP','E_POP','DISTANCE','PAX','FARE')]
+corA <- cor(AirFareDataSet2)
+corA
+
+set.seed(100)
+train.index <- sample(row.names(AirFareDataSet2), 0.7*dim(AirFareDataSet2)[1])  
+valid.index <- setdiff(row.names(AirFareDataSet2), train.index)  
+trainingdataset <- AirFareDataSet2[train.index, ]
+valid.df <- AirFareDataSet2[valid.index, ]
+
+AirplaneLM <- lm(FARE ~ ., data = trainingdataset)
+
+options(scipen = 100)
+summary(AirplaneLM)
+
+
+#The best predictor of fare is distance, then next is coupon.
+
+
+library(ggplot2)
+ggplot(AirFareDataSet2, aes(x=FARE, y=DISTANCE, colour=FARE)) + geom_point(size=1.5) +stat_smooth(method=lm, se=FALSE, colour="black")
+ggplot(AirFareDataSet2, aes(x=FARE, y=COUPON, colour=FARE)) + geom_point(size=1.5) +stat_smooth(method=lm, se=FALSE, colour="black")
+
+```
+
+
+b. Explore the categorical predictors (excluding the first four) by computing the percentage of flights in each category. Create a pivot table with the average fare in each category. Which categorical predictor seems best for predicting FARE?
+
+```{r}
+#prop.table(table(x), 1)
+library(dplyr)
+library(dbplyr)
+
+AirFareDataSet3 <- airfares.df[, c(7,8,14,15,18)]
+store_variable_vaca <- count(AirFareDataSet3,'VACATION')
+
+no_len=length(AirFareDataSet3[AirFareDataSet3$VACATION=="No", ]$VACATION )
+yes_len=length(AirFareDataSet3[AirFareDataSet3$VACATION=="Yes", ]$VACATION )
+summary(yes_len)
+summary(no_len)
+
+airfare.calc.no=sum(AirFareDataSet3$FARE)
+airfare.calc.no
+avg.fare.no=airfare.calc.no/no_len
+avg.fare.no
+
+AirFareDataSet3[AirFareDataSet3$VACATION=="No", ]
+
+AirFareDataSet3[AirFareDataSet3$VACATION=="Yes", ]
+
+no_len=length(AirFareDataSet3[AirFareDataSet3$VACATION=="No", ]$VACATION )
+
+yes_len=length(AirFareDataSet3[AirFareDataSet3$VACATION=="Yes", ]$VACATION )
+
+vac.no=subset(AirFareDataSet3, VACATION=="No" )
+length(vac.no$VACATION)
+
+no.df=AirFareDataSet3[AirFareDataSet3$VACATION=="No", ]
+
+yes.df=AirFareDataSet3[AirFareDataSet3$VACATION=="Yes", ]
+
+airfare.calc.no=sum(no.df$FARE)
+airfare.calc.no
+avg.fare.no=airfare.calc.no/no_len
+
+AirFareDataSet3$VACATION <- ifelse(AirFareDataSet3$VACATION == "Yes", 1 , 0)
+AirFareDataSet3$SW <- ifelse(AirFareDataSet3$SW == "Yes", 1 , 0)
+AirFareDataSet3$SLOT <- ifelse(AirFareDataSet3$SLOT == "Controlled", 1 , 0)
+AirFareDataSet3$GATE <- ifelse(AirFareDataSet3$GATE == "Constrained", 1 , 0)
+str(AirFareDataSet3)
+
+freq.Vacation <- table(AirFareDataSet3$VACATION)
+round(prop.table(freq.Vacation),4)*100
+show(freq.Vacation)
+
+freq.SW <- table(AirFareDataSet3$SW)
+round(prop.table(freq.SW),4)*100
+show(freq.SW)
+
+freq.GATE <- table(AirFareDataSet3$GATE)
+round(prop.table(freq.GATE),4)*100
+show(freq.GATE)
+
+freq.SLOT <- table(AirFareDataSet3$SLOT)
+round(prop.table(freq.SLOT),4)*100
+show(freq.SLOT)
+
+aggmean <- aggregate(AirFareDataSet3$FARE, list(AirFareDataSet3$VACATION), mean)
+show(aggmean)
+
+aggmean <- aggregate(AirFareDataSet3$FARE, list(AirFareDataSet3$SW), mean)
+show(aggmean)
+
+aggmean <- aggregate(AirFareDataSet3$FARE, list(AirFareDataSet3$GATE), mean)
+show(aggmean)
+
+aggmean <- aggregate(AirFareDataSet3$FARE, list(AirFareDataSet3$SLOT), mean)
+show(aggmean)
+
+```
+Looking at the output from the modeling of the categorical variables, the highest is SLOT and the lowest is SW. 
+
+-------------------------------------------------
+
+
+c. Find a model for predicting the average fare on a new route:
+i. Convert categorical variables (e.g., SW) into dummy variables. Then, partition the data into training and validation sets. The model will be fit to the training and evaluated on the validation set.
+```{r}
+ 
+ntotal <- length(airfares.df$FARE)
+
+ntrain <- round(ntotal * 0.6)
+nvalid <- ntotal - ntrain
+set.seed(202)  
+ntrain.index <- sort(sample(ntotal, ntrain))
+trainingdataset <- airfares.df[ntrain.index, ]
+valid.df <- airfares.df[-ntrain.index, ]
+
+```
+
+
+ii. Use stepwise regression to reduce the number of predictors. You can ignore
+the first four predictors (S_CODE, S_CITY, E_CODE, E_CITY). Report the estimated model selected.
+
+```{r}
+
+library(leaps)
+
+search <- regsubsets(FARE ~ .,data = trainingdataset,nbest = 1,nvmax = dim(trainingdataset)[2],method = "seqrep")
+sum <- summary(search)
+t(t(sum$adjr2))
+models <-  order(sum$adjr2, decreasing = T)[1:3]
+
+```
+
+iii. Repeat (ii) using exhaustive search instead of stepwise regression. Compare the resulting best model to the one you obtained in (ii) in terms of the predictors that are in the model.
+```{r}
+library(leaps)
+
+#search <- regsubsets(FARE ~ .,data = trainingdataset,nbest = 1,nvmax = dim(trainingdataset)[2],method = "exhaustive", really.big = TRUE)
+
+```
+
+-------------------------------------------------
+-------------------------------------------------
+
+NOTE: Dr Davalos, I've made multiple attempts to run this method with no success. The amount of memory (even on my high-end machine) cannot allow for the running of really.big and exhaustive method. I understand that this method gives the best prediction but cannot knit or complete the next three steps as I cannot achieve a successful run of this portion. Note: 4 hours of running the code and no success (on multiple attempts). This will impact the completeness and unsuccesful portions of the quesiton. I would have like to continue to finish however the program will not allow and I cannot continue on without the information.
+-------------------------------------------------
+-------------------------------------------------
+
+
+d. In competitive industries, a new entrant with a novel business plan can have a
+disruptive effect on existing firms. If a new entrant’s business model is sustainable,
+other players are forced to respond by changing their business practices. If the goal
+of the analysis was to evaluate the effect of Southwest Airlines’ presence on the
+airline industry rather than predicting fares on new routes, how would the analysis
+be different? Describe technical and conceptual aspects.
+
+I would perform a SWOT analysis on the industry. A SWOT analysis composes of strengths, weaknesses, opportunities, and threats. When understanding the strengths portion, I would look at what characteristics the company is good at. In southwest airlines for instance, I would analyze factors that drive down fare seeing as they are a low cost carrier. Second, for weaknesses, I would also look at fare and understand what may be driving up the fare. Maybe the correlation of a variable like S_INCOME or E_INCOME could impact the fares price in a negative way. Opportunities I would look at analyzing ways to improve the fare of a ticket based on insights of variables like coupon or city. Finally threats I would analyze data like vacation or S_POP to understand if there is a correlation that could be threatening the business model. Ultimately these analysis are conducted on the basis that they should help improve and or assist the businesses success.
+
+
+

@@ -1,0 +1,158 @@
+---
+title: "EOCCh11RandallPlyler"
+author: "Randall Plyler"
+date: "2/27/2022"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(neuralnet)
+
+library(nnet)
+library(caret)
+library(e1071)
+library(forecast)
+```
+
+Credit Card Use. Consider the hypothetical bank data in Table 11.8 on consumers’
+use of credit card credit facilities. Create a small worksheet in Excel, like that used in
+Example 1, to illustrate one pass through a simple neural network.
+TABLE 11.8 DATA FOR CREDIT CARD EXAMPLE AND VARIABLE
+DESCRIPTIONS
+Years Salary Used Credit
+4 43 0
+18 65 1
+1 53 0
+3 95 0
+15 88 1
+6 112 1
+Years: number of years the customer has been with the bank
+Salary: customer’s salary (in thousands of dollars)
+Used Credit: 1 = customer has left an unpaid credit card balance at the end of
+at least one month in the prior year, 0 = balance was paid off at the end of each
+month
+```{r}
+
+VarA <- data.frame(Years=c(4,18,1,3,15,6),Salary=c(43,65,53,95,88,112),Used_Credit=c(0,1,0,0,1,1))
+VarA$Has_Used_Credit <- ifelse(VarA$Used_Credit == 1, 1, 0)
+VarA$Has_Not_Used_Credit <- ifelse(VarA$Used_Credit == 0, 1, 0)
+neuralnet_Data <- neuralnet(Has_Used_Credit + Has_Not_Used_Credit ~ Years + Salary,data = VarA, linear.output = F, hidden = 3)
+plot(neuralnet_Data)
+```
+
+
+Car Sales. Consider the data on used cars (ToyotaCorolla.csv) with 1436 records and
+details on 38 attributes, including Price, Age, KM, HP, and other specifications. The
+goal is to predict the price of a used Toyota Corolla based on its specifications.
+a. Fit a neural network model to the data. Use a single hidden layer with 2 nodes.
+• Use predictors Age_08_04, KM, Fuel_Type, HP, Automatic, Doors, Quarterly_Tax,
+Mfr_Guarantee, Guarantee_Period, Airco, Automatic_airco, CD_Player,
+Powered_Windows, Sport_Model, and Tow_Bar.
+• Remember to first scale the numerical predictor and outcome variables to a 0–1
+scale (use function preprocess() with method = “range”—see Chapter 7) and convert
+categorical predictors to dummies.
+
+Record the RMS error for the training data and the validation data. Repeat
+the process, changing the number of hidden layers and nodes to {single layer with
+5 nodes}, {two layers, 5 nodes in each layer}.
+
+i. What happens to the RMS error for the training data as the number of layers
+and nodes increases?
+
+ii. What happens to the RMS error for the validation data?
+
+iii. Comment on the appropriate number of layers and nodes for this application.
+
+
+
+```{r}
+set.seed(5000)
+ToyotaCorollaDF <- read.csv("C:/Users/randa/Dropbox/Masters/Winter/TBANLT 560 Data Mining/Files/DMBA-R-datasets/DMBA-R-datasets/ToyotaCorolla.csv")
+
+ToyotaCorollaDF$CNG <- 1* (ToyotaCorollaDF$Fuel_Type == "CNG")
+ToyotaCorollaDF$Diesel <- 1* (ToyotaCorollaDF$Fuel_Type == "Diesel")
+```
+
+
+```{r}
+TrainDF <- sample(row.names(ToyotaCorollaDF), 0.6*dim(ToyotaCorollaDF)[1])  
+ValidDF <- setdiff(row.names(ToyotaCorollaDF), TrainDF)  
+TrainDF2 <- ToyotaCorollaDF[TrainDF, ]
+ValidDF2 <- ToyotaCorollaDF[ValidDF, ]
+```
+
+
+```{r}
+Nvalues <- preProcess(TrainDF2, method="range")
+TrainingNValues <- predict(Nvalues, TrainDF2)
+ValidationNValues <- predict(Nvalues, ValidDF2)
+```
+
+
+```{r}
+NN2 <- neuralnet(Price ~ Age_08_04+KM+CNG+Diesel+HP+Automatic+Doors+Quarterly_Tax+Mfr_Guarantee+Guarantee_Period+Airco+Automatic_airco+CD_Player+Powered_Windows+Sport_Model+Tow_Bar, data=TrainingNValues , linear.output = T,hidden = 2)
+plot(NN2)
+```
+
+
+```{r}
+find("compute")
+TrainingDataPrediction <- compute(NN2, TrainingNValues)
+NN2$result.matrix
+ValidationDataPrediction <- compute(NN2, ValidationNValues)
+```
+
+
+```{r}
+DF_Prediction2N <- RMSE(unlist(TrainingDataPrediction), TrainingNValues$Price)
+show(DF_Prediction2N)
+predict_valid_two_nodes <- RMSE(unlist(ValidationDataPrediction), ValidationNValues$Price)
+show(predict_valid_two_nodes)
+```
+
+
+```{r}
+NN3 <- neuralnet(Price ~ Age_08_04+KM+CNG+Diesel+HP+Automatic+Doors+Quarterly_Tax+Mfr_Guarantee+Guarantee_Period+Airco+Automatic_airco+CD_Player+Powered_Windows+Sport_Model+Tow_Bar,data = TrainingNValues , linear.output = T,hidden = 5)
+plot(NN3)
+```
+
+
+```{r}
+TrainingPredictionDF_NN3 <- compute(NN3, TrainingNValues)
+NN3$result.matrix
+ValidationPredictionDF_NN3 <- compute(NN3, ValidationNValues)
+```
+
+
+```{r}
+DFA <- RMSE(unlist(TrainingPredictionDF_NN3), TrainingNValues$Price)
+show(DFA)
+predict_valid_five_nodes <- RMSE(unlist(ValidationPredictionDF_NN3), ValidationNValues$Price)
+show(predict_valid_five_nodes)
+```
+
+
+```{r}
+NN4 <- neuralnet(Price ~ Age_08_04+KM+CNG+Diesel+HP+Automatic+Doors+Quarterly_Tax+Mfr_Guarantee+Guarantee_Period+Airco+Automatic_airco+CD_Player+Powered_Windows+Sport_Model+Tow_Bar,data = TrainingNValues , linear.output = T,hidden = c(5,5))
+plot(NN4)
+```
+
+
+```{r}
+VarX <- compute(NN4, TrainingNValues)
+VarY <- compute(NN4, ValidationNValues)
+```
+
+```{r}
+DF_Prediction5N <- RMSE(unlist(VarX), TrainingNValues$Price)
+show(DF_Prediction5N)
+DF2_Prediction5N <- RMSE(unlist(VarY), ValidationNValues$Price)
+```
+
+
+
+
+The RMSE of the training and validation models seems to change very very minimal. The number of hidden layer's used is 2 for most of the nerual network and shows that the more that there is, the little impact it has on the error of prediction. 
