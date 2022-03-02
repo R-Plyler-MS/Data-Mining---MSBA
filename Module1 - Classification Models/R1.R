@@ -1,0 +1,6 @@
+User_Age = c(25,56,65,32,41,49)
+User_Income = c(49000.00,156000.00,99000.00,192000.00,39000.00,57000.00)
+User_IncomeByUser_Age = data.frame(User_Age=User_Age,User_Income=User_Income)
+User_IncomeByUser_AgeScaled =data.frame(scale(User_IncomeByUser_Age))
+(User_IncomeByUser_Age)
+(User_IncomeByUser_AgeScaled)
